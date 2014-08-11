@@ -1,4 +1,4 @@
 open-dataloggers
 ================
 
-Dialog with open and closed dataloggers
+Dialog with open dataloggers
