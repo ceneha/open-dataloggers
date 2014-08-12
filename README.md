@@ -19,18 +19,23 @@ Based on this list, the class identifies the equipment and obtains information o
 
 ### Examples of use
 
+
 <blockquote>
-The '''blockquote''' command will indent 
-both margins when needed instead of the 
-left margin only as the colon does.  
+import datalogger
+import serial
+import sys
+import os
+import logging
+
+# create an instance of the class, need parameters serial port and datalogger number from list (last)
+datalog = datalogger.Datalogger( '/dev/ttyUSB0', 115200, serial.PARITY_NONE, 0, 0, 1)
+datalog.start_conexion()
+# remove stored information, need destination file path
+datalog.get_datalogger_data("pathFile")
+datalog.close_conexion()
+
 </blockquote>
 
-  # create an instance of the class, need parameters serial port and datalogger number from list (last)
-  datalog = datalogger.Datalogger( '/dev/ttyUSB0', 115200, serial.PARITY_NONE, 0, 0, 1)
-  datalog.start_conexion()
-  # remove stored information, need destination file path
-  datalog.get_datalogger_data("pathFile")
-  datalog.close_conexion()
 
 ### Dependencies
 * python-pyserial
