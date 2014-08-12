@@ -1,0 +1,3 @@
+* python-pyserial
+* python-loggingx
+* python-configparser 
