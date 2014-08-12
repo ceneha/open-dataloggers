@@ -12,4 +12,7 @@ Interface for communication with open dataloggers
 
 ### Dependencies
 * python-pyserial
+* python-loggingx
+* python-configparser 
+
 
