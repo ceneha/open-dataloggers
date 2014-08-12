@@ -20,8 +20,7 @@ Based on this list, the class identifies the equipment and obtains information o
 ### Examples of use
 
 
-.. code-block:: python
-  import datalogger
+  >>> import datalogger
   import serial
   import sys
   import os
