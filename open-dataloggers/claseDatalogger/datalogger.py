@@ -9,7 +9,7 @@ import logging
 class Datalogger():
 
      #defino elemento de loggeo de python
-    logging.basicConfig(filename='/home/gag/Escritorio/example.log', format='%(asctime)s - %(levelname)s - %(message)s', level=logging.DEBUG)
+    logging.basicConfig(filename='/../log/syslog.log', format='%(asctime)s - %(levelname)s - %(message)s', level=logging.DEBUG)
     comandoRt=" "
     comandoDatos=" "
 
@@ -19,7 +19,6 @@ class Datalogger():
             # define los parametros para la conexion, los parametros los recibe cuando se crea el objeto
             self.serial = serial.Serial(port, baudrate, parity=parity, rtscts=rtscts, xonxoff=xonxoff)
             # bytesize=EIGHTBITS, parity=PARITY_NONE, stopbits=STOPBITS_ONE por defecto en la libreria serial
-            # se esta utilizando 8,n,1
             # el parametro tipo se utiliza para elegir el tipo de datalogger con el que se quiere trabajar
             # ver equipos.py para ver los equipos cargados
         except serial.serialutil.SerialException:
@@ -72,7 +71,7 @@ class Datalogger():
         if out != '':
             print ">>  Datos en tiempo real:"
             print ">>" + out
-        self.serial.write('\r\n')
+       #self.serial.write('\r\n')
 
 
     ## Realiza la interregacion del datalogger cada TIEMPO y lo va almacenando en archivos
@@ -84,7 +83,12 @@ class Datalogger():
     def get_auto_data_rt(self,dias,horas,minutos,muestraspseg,minDuraFile,pathFile):
        # dependiendo la cantidad de muestras saco el tiempo de espera
         logging.info("Inicio Captura tiempo real")
-        tiempo = 1//muestraspseg # // division con resultado redondeado
+        muestraspseg=float(muestraspseg)
+        dias=int(dias)
+        horas=int(horas)
+        minutos=int(minutos)
+        minDuraFile=int(minDuraFile)
+        tiempo = round(1.0/muestraspseg,3) # // division con resultado redondeado
         while self.serial.inWaiting() == 0:
             self.serial.write('\r\n')
             time.sleep(1)
@@ -116,7 +120,7 @@ class Datalogger():
                 # -------se realiza la consulta al datalogger--------
                 self.serial.write(comandoRt+'\r\n')
                 # se espera- tiempo- antes de leer la salida
-                time.sleep(0.125)
+                time.sleep(tiempo)
                 # devuelve la cantidad de chars en el buffer
                 # lee esa cantidad de caracteres
                 cantChar=int(self.serial.inWaiting())
@@ -140,52 +144,61 @@ class Datalogger():
             f.close()
             # control primer ciclo
             # realizo la resta de la fecha actual y la inicial, devuelve un objeto timedelta
-            resta=fhActual-fhInicio
+            fhActual3=(datetime.today())
+            resta=fhActual3-fhInicio
             # del objeto saco los dias, las horas y los minutos, estos se encuentran en segundos
             restaDias= int(resta.days)
             restaHoras=int(resta.seconds // 3600)
-            restaMinutos = int(resta.seconds // 60 % 60)
+            restaMinutos=int(resta.seconds // 60 % 60)
 
+    def get_datalogger_data(self,pathFile): 
+	logging.info("Inicio Obtencion Flux")                                                                                           
+        while self.serial.inWaiting() == 0:                                                                                             
+            self.serial.write('\r\n')                                                                                                   
+            time.sleep(1)                                                                                                               
+        # se crea el archivo con la fecha y hora                                                                                        
+        fhActual=(str(datetime.today()))                                                                     
+        # le manda el caracter 8 para obtener las talbas almacenadas en el datalogger                    
+        self.serial.write(comandoDatos+'\r\n')                                                           
+        out= ''                                                                                       
+        # se espera un segundo antes de leer la salida                  
+        time.sleep(1)                                                                   
+        # luego almacena en out todo lo que le devuelve el datalogger                       
 
-
-    # obtiene las tablas flux almacenadas en el datalogger y las almacenan en namefile
-    def get_datalogger_data(self,pathFile):
-        logging.info("Inicio Obtencion Flux")
-        while self.serial.inWaiting() == 0:
-            self.serial.write('\r\n')
-            time.sleep(1)
-        # se crea el archivo con la fecha y hora
-        fhActual=(str(datetime.today()))
-        try:
-            f = open(pathFile+"flux"+fhActual+".raw", "w")
-        except IOError:
-            logging.error("No se pudo crear el archivo Metodo Obtencion Flux")
-        #contador =0
-        while True:
-            # se envian un par de enter para obtener respuesta del datalogger
-            while self.serial.inWaiting() == 0:
-                self.serial.write('\r\n')
-                time.sleep(1)
-            # le manda el caracter 8 para obtener las talbas almacenadas en el datalogger
-            self.serial.write(comandoDatos+'\r\n')
-            out= ''
-            # se espera un segundo antes de leer la salida
-            time.sleep(1)
-            # luego almacena en out todo lo que le devuelve el datalogger
-            # devuelve la cantidad de chars en el buffer
-            # lee esa cantidad de caracteres
-            cantChar=int(self.serial.inWaiting())
-            if (cantChar > 0):
-                out = self.serial.read(cantChar)
-            if (out != '') & ("flux" in out ):
-                f.write(out)
-                #print out
-            else:
-                #print "No hay mas Flux"
-                break
-            #limpia los buffer de la comunicacion serie
-            self.serial.flush()
-            self.serial.flushInput()
-            self.serial.flushOutput()
-            #print contador
-            #contador=contador + 1
+        # devuelve la cantidad de chars en el buffer                                        
+        # lee esa cantidad de caracteres                                                    
+        cantChar=int(self.serial.inWaiting())                                               
+        if (cantChar > 0):                                                                  
+            out = self.serial.read(cantChar)        
+        if (out != '') & ("flux" in out ):
+	    try:                                                                                                                                                  
+               f = open(pathFile+"flux"+fhActual+".raw", "w")                                                                                                    
+            except IOError:                                                                                                                                       
+               logging.error("No se pudo crear el archivo Metodo Obtencion Flux")   
+            while (out != ''):                                                                                         
+                if("ts_data" in out):
+                    f.write(out) 
+                    logging.info("Llego un ts_data")   
+                    break
+                else:
+                    f.write(out)
+                # se envian un par de enter para obtener respuesta del datalogger                                
+                while self.serial.inWaiting() == 0:                                                              
+                    self.serial.write('\r\n')                                                                    
+                    time.sleep(1)                                                                             
+                #le manda el caracter 8 para obtener las talbas almacenadas en el datalogger                    
+                self.serial.write(comandoDatos+'\r\n')                                                           
+                #se espera un segundo antes de leer la salida                  
+                time.sleep(1)                                                                   
+                # luego almacena en out todo lo que le devuelve el datalogger                       
+                # devuelve la cantidad de chars en el buffer                                        
+                # lee esa cantidad de caracteres                                                    
+                cantChar=int(self.serial.inWaiting())                                               
+                if (cantChar > 0):                                                                  
+                    out = self.serial.read(cantChar)          
+            self.serial.flush()                                                                 
+            self.serial.flushInput()                                                            
+            self.serial.flushOutput()                     
+            f.close()   
+        else:
+            logging.info("No hay flux para extraer") 
