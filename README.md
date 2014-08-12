@@ -20,7 +20,7 @@ Based on this list, the class identifies the equipment and obtains information o
 ### Examples of use
 
 
-::
+.. code-block:: python
 import datalogger
 import serial
 import sys
@@ -32,7 +32,7 @@ datalog.start_conexion()
 # remove stored information, need destination file path
 datalog.get_datalogger_data("pathFile")
 datalog.close_conexion()
-::
+
 
 
 ### Dependencies
