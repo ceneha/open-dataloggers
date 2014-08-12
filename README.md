@@ -19,6 +19,7 @@ Based on this list, the class identifies the equipment and obtains information o
 
 ### Examples of use
 
+The following example establish connection with datalogger and extracts its stored information
 
   > 
     import datalogger
