@@ -20,8 +20,8 @@ Based on this list, the class identifies the equipment and obtains information o
 ### Examples of use
 
 
-  > import datalogger
-    
+  > 
+    import datalogger
     import serial
     
     import sys
