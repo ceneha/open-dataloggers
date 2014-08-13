@@ -35,7 +35,7 @@ The following example establish connection with datalogger and extracts its stor
     datalog.close_conexion()
 
 
-This example establish connection with datalogger and and returns to the screen the variables measured by sensors connected to the datalogger
+This example establish connection with datalogger and returns to the screen the variables measured by sensors connected to the datalogger in real time 
 
   > 
     import datalogger
@@ -48,6 +48,8 @@ This example establish connection with datalogger and and returns to the screen 
     datalog.start_conexion()
     datalog.get_data_rt()
     datalog.close_conexion()
+
+
 
 ### Dependencies
 * python-pyserial
