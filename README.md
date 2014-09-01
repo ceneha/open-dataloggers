@@ -23,10 +23,7 @@ The following example establish connection with datalogger and extracts its stor
 
   > 
     import datalogger
-    import serial
-    import sys
-    import os
-    import logging
+
     # create an instance of the class, need parameters serial port and datalogger number from list (last)
     datalog = datalogger.Datalogger( '/dev/ttyUSB0', 115200, serial.PARITY_NONE, 0, 0, 1)
     datalog.start_conexion()
@@ -39,10 +36,7 @@ This example establish connection with datalogger and returns to the screen the 
 
   > 
     import datalogger
-    import serial
-    import sys
-    import os
-    import logging
+
     # create an instance of the class, need parameters serial port and datalogger number from list (last)
     datalog = datalogger.Datalogger( '/dev/ttyUSB0', 115200, serial.PARITY_NONE, 0, 0, 1)
     datalog.start_conexion()
