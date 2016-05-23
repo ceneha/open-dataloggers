@@ -34,7 +34,8 @@ Examples of use
 
 The following example establish connection with datalogger and extracts its stored information
 
-  > 
+.. code:: python
+
     import datalogger
     # create an instance of the class, need parameters serial port and datalogger number from list (last)
     datalog = datalogger.Datalogger( '/dev/ttyUSB0', 115200, serial.PARITY_NONE, 0, 0, 1)
@@ -46,7 +47,8 @@ The following example establish connection with datalogger and extracts its stor
 
 This example establish connection with datalogger and returns to the screen the variables measured by sensors connected to the datalogger in real time 
 
-  > 
+.. code:: python
+
     import datalogger
     # create an instance of the class, need parameters serial port and datalogger number from list (last)
     datalog = datalogger.Datalogger( '/dev/ttyUSB0', 115200, serial.PARITY_NONE, 0, 0, 1)
