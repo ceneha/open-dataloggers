@@ -1,14 +1,26 @@
 Interface for communication with open dataloggers
-====
-This interface allows communication with the datalogger, extract the stored data and obtain values ​​measured by the sensors. 
+=================================================
 
-The principal component is a class called Datalogger developed in Python which uses a configuration file where is the list of devices that can operate.
+This interface is a POO software that allows communication with a datalogger device, that is:
+
+- extract the stored data 
+- obtain realtime values ​​measured by the sensors
+- clean the device's memory 
+
+The principal component is a class called Datalogger developed in Python which uses a configuration file where is the list of devices that can be operated.
 
 Based on this list, the class identifies the equipment and obtains information on the communication settings and commands necessary to perform the dialogue.
 
+Supported devices
+-----------------
+
+- Campbell CR1000
+- Campbell CR3000
+- Stevens Dotlogger
 
 
-### Features
+Features
+--------
 
 * Establish communication with datalogger
 * Remove stored and real-time information (if possible)
@@ -17,7 +29,8 @@ Based on this list, the class identifies the equipment and obtains information o
 
 
 
-### Examples of use
+Examples of use
+---------------
 
 The following example establish connection with datalogger and extracts its stored information
 
@@ -43,7 +56,9 @@ This example establish connection with datalogger and returns to the screen the 
 
 
 
-### Dependencies
+Dependencies
+------------
+
 * python-pyserial
 * python-loggingx
 * python-configparser 
