@@ -1,2 +1,2 @@
-Emiliano López <https://github.com/emilopez>
+Emiliano López <https://github.com/emilopez> <https://gitlab.com/emilopez>
 Gabriel Agustín García <https://github.com/gabrielagustin>
